@@ -1,140 +1,20 @@
-Introduction
-
-This first assignment will be described in multiple parts: a) loading data, b) mean and median daily steps taken, c) average daily actvity pattern, d) imputation of missing values, e) differences in activity pattern between weekends and weekdays. 
-
-Results
-
-In Part B, descriptive statistics, means and medians, are used as measures of location for daily steps excluding missing values and including imputed missing values. In Part C, the maximum number of steps per five-minute interval is used to measure peak in activity.
-
-Figures
-
-Histograms for the mean number of steps taken daily excluding (and including imputed) missing values enable graphical comparison of frequency distribution(s). Lattice plots for the mean number of steps taken per five-minute interval enable graphical comparison of time series between weekends and weekdays.
-
-* Rplot1. Histogram of the total number of steps taken daily (excluding missing. values)
-* Rplot2. Time series of the mean number of steps taken per five-minute interval averaged over all week days 
-* Rplot3. Histogram of the total number of steps taken daily (including imputed missing values)
-* Rplot4. Multiple time series of the mean number of steps taken per five-minute interval averaged across all weekend or weekdays
+# Reproducible Research: Peer Assessment 1
 
 
-A. Loading Data
-[Activity monitoring data](https://d396qusa40orc.cloufront.net/repdata%2Factivity.zip)
+## Loading and preprocessing the data
 
-Three variables are included in the activity monitoring dataset:
 
-i) steps - the number of steps taken in a five-minute interval (missing values are coded as NA)
-ii) date - the dateon which the measurement was taken in YYYY-MM-DD format
-iii) interval - identifier for the five-minute interval in which measurement was taken.
 
-Source: The dataset is stored in a comma-separated-value (csv) file and there are a total of 17,568 observations.
+## What is mean total number of steps taken per day?
 
-activity.csv (2/11/2014 10:08AM)
 
-```{r}
-setwd("C:/Users/d2i2k/Documents/GitHub/RepData_PeerAssessment1")
-ActivityData <- read.csv("activity.csv", header=TRUE)          # 17,568
-```
 
-B. Mean and Median Daily Steps
+## What is the average daily activity pattern?
 
-1. Plot histogram of the total number of steps taken daily excluding missing values (Rplot1).
 
-2. Calculate **mean** and **median** number of steps taken daily using *tapply* function to average over dates.
 
-```{r fig.width=7, fig.height=6}
-x <- tapply(ActivityData$steps,INDEX=ActivityData$date,FUN=sum,na.rm=TRUE)
-y <- subset(x, x>0)
-hist(y,main="Histogram of Daily Steps",xlab="Daily Number of Steps",ylab="Frequency")
-summary(y)
-```
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-41    8841   10760   10770   13290   21190 
+## Imputing missing values
 
-Excluding missing values, the mean and median number of steps daily equal 10,770 and 10760, respectively.
 
-C. Average Daily Activity Pattern
 
-1. Calculate mean number of steps per interval by using *tapply* function to average steps taken over intervals.
-
-2. Plot time series of the average number of steps taken per five-minute interval (Rplot2).
-
-```{r}
-y <- tapply(ActivityData$steps,INDEX=ActivityData$interval,FUN=mean,na.rm=TRUE)
-x <- tapply(ActivityData$interval,INDEX=ActivityData$interval,FUN=mean,na.rm=TRUE)
-xy <- cbind(x,y)
-plot(xy,type="l",main="Time Series of Mean Steps",xlab="Five-minute Interval",ylab="Average Number of Steps")
-```
-
-3. Peak five-minute interval
-
-```{r}
-which.max(y)
-```
-835 # minutes for maximum number of steps
-104 # interval for maximum number of steps
-
-The maximum number of steps, 206.2, occurs at 835 minutes, the 104th non-missing, five-minute interval.
-
-D.Imputation of missing values
-
-1. Calculate the total number of missing values in the dataset, *i.e.*, NA's.
-
-```{r}
-x <- is.na(ActivityData$steps)
-x.sub <- subset(x,x="TRUE")
-length(x.sub)
-```
-[1] 2304 # number of missing values
-
-2. Impute missing values by using the *ifelse* function to assign zeroes an re-calculate total steps daily.
-
-```{r}
-y <- ifelse(is.na(ActivityData$steps),0,ActivityData$steps)
-z <- data.frame(y,ActivityData$date)
-w <- tapply(z$y,INDEX=z$ActivityData.date,FUN=sum,na.rm=TRUE)
-```
-
-3. Plot histogram of the total number of steps taken daily (Rplot3).
-
-```{r}
-hist(w,main="Histogram of Daily Steps",xlab="Daily Number of Steps",ylab="Frequency",)
-```
-4. Re-calculate **mean** and **median** number of steps taken daily.
-```{r}
-summary(w)
-```
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-      0    6778   10400    9354   12810   21190 
-      
-The mean and median number of steps daily equal 9,354 and 10400, respectively. The former is 1,424 less and the latter 360 steps fewer than the original calculations due to imputation of missing values for eight days.      
-
-E. Differences in Activity Pattern between Weekends and Weekdays
-
-1. Create a new factor variable in the dataset with two levels - Weekday" and "Weekend" indicating whether a given date is a weekend or week day using the *is.weekend* function. 
-
-``{r}
-library(chron)
-w <- is.weekend(ActivityData$date)                             # 17,568 row vector
-xyw <- data.frame(x,y,w)
-```
-2. Multiple time series plots of the mean number of steps taken averaged across all weekend or week days (Rplo4).
-
-```{r}
-xyw1 <- subset(xyw,w=="TRUE")                                  #  4,608 row by 3 column array for weekends
-x <- tapply(xyw1$x,INDEX=xyw1$y,FUN=mean,na.rm=TRUE)           #    288 row vector of steps
-y <- tapply(xyw1$y,INDEX=xyw1$y,FUN=mean,na.rm=TRUE)           #    288 row vector of intervals
-z <- vector(mode = "character",length=288)                     #    288 row vector of weekends
-   for (i in 1:288) {z[i] <- "Weekend"}
-xy1 <- cbind(as.data.frame(x),as.data.frame(y),as.data.frame(z))    #    288 row by 3 column array for weekends
-
-xyw2 <- subset(xyw,w=="FALSE")                                 #  4,608 row by 3 column array for weekdays
-x <- tapply(xyw2$x,INDEX=xyw2$y,FUN=mean,na.rm=TRUE)           #    288 row vector of steps
-y <- tapply(xyw2$y,INDEX=xyw2$y,FUN=mean,na.rm=TRUE)           #    288 row vector of intervals
-z <- vector(mode = "character",length=288)                     #    288 row vector of weekdays
-   for (i in 1:288) {z[i] <- "Weekday"}
-xy2 <- cbind(as.data.frame(x),as.data.frame(y),as.data.frame(z))    #    288 row by 3 column array for weekdays
-
-xy <- rbind(xy1,xy2)                                           #    576 row by 3 column array
-
-library(ggplot2)
-qplot(y,x,data=xy,facets=z~.,main="Multiple Time Series Plots",geom=c("line"),xlab="Time Interval",ylab="Average Number of Steps")
-```
+## Are there differences in activity patterns between weekdays and weekends?
