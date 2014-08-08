@@ -8,7 +8,7 @@ Output: "PA1_template.html"
 This first assignment will be described in multiple parts: a) loading data, b) mean and median steps taken daily, c) average daily activity pattern, d) imputation of missing values, and e) differences in activity pattern between weekends and weekdays. 
 
 ##Loading Data## 
-(Source Dataset: activity.csv (2/11/2014 10:08AM)
+Source Dataset: activity.csv (2/11/2014 10:08AM)
 
 [Activity monitoring data](https://d396qusa40orc.cloudfront.net/repdata%2Factivity.zip) 
 
