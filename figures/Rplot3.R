@@ -1,4 +1,4 @@
-setwd("C:/Users/d2i2k/Documents/GitHub/RepData_PeerAssessment1")
+setwd("C:/Users/d2i2k/tmp/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE) 
 x <- is.na(ActivityData$steps)
 x.sub <- subset(x,x="TRUE")

@@ -1,4 +1,4 @@
-setwd("C:/Users/d2i2k/Documents/GitHub/RepData_PeerAssessment1")
+setwd("C:/Users/d2i2k/tmp/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE)          # 17,568 row by 3 column array
 x <- ifelse(is.na(ActivityData$steps), 0, ActivityData$steps)  # 17,568 row vector
 y <- ActivityData$interval                                     # 17,568 row vector
