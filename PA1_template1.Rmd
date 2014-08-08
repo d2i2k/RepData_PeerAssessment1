@@ -1,0 +1,25 @@
+---
+title: "PA1_template1"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+setwd("C:/Users/d2i2k/tmp/RepData_PeerAssessment1")
+ActivityData <- read.csv("activity.csv", header=TRUE) 
+x <- tapply(ActivityData$steps,INDEX=ActivityData$date,FUN=sum,na.rm=TRUE)
+y <- subset(x, x>0)
+```
+
+## Histogram of total number of steps taken daily (excluding missing values)
+```{r, echo=FALSE}
+hist(y,main="Histogram of Daily Steps",xlab="Daily Number of Steps",ylab="Frequency")
+```
+
+## Mean and median number of steps taken daily (excluding missing values)
+```{r}
+summary(y)
+```

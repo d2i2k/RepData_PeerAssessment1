@@ -103,7 +103,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li>Rplot3. Histogram of total number of steps taken daily including imputed missing values,</li>
 <li>Rplot4. Multiple time series of mean number of steps taken per five-minute interval averaged over weekends or weekdays.</li>
 </ul>
-<pre class="r"><code>setwd(&quot;C:/Users/d2i2k/tmp/RepData_PeerAssessment1&quot;)
+<pre class="r"><code>setwd(&quot;C:/Users/d2i2k/RepData_PeerAssessment1&quot;)
 ActivityData &lt;- read.csv(&quot;activity.csv&quot;, header=TRUE) 
 x &lt;- tapply(ActivityData$steps,INDEX=ActivityData$date,FUN=sum,na.rm=TRUE)
 y &lt;- subset(x, x&gt;0)</code></pre>
@@ -122,7 +122,7 @@ xy &lt;- cbind(x,y)</code></pre>
 ## 104</code></pre>
 <div id="strategy-for-data-imputation-of-missing-values-as-zeroes" class="section level3">
 <h3>Strategy for data imputation of missing values as zeroes</h3>
-<pre class="r"><code>setwd(&quot;C:/Users/d2i2k/tmp/RepData_PeerAssessment1&quot;)
+<pre class="r"><code>setwd(&quot;C:/Users/d2i2k/RepData_PeerAssessment1&quot;)
 ActivityData &lt;- read.csv(&quot;activity.csv&quot;, header=TRUE) 
 x &lt;- is.na(ActivityData$steps)
 x.sub &lt;- subset(x,x=&quot;TRUE&quot;)

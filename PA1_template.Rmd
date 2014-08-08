@@ -41,7 +41,7 @@ Time series of mean number of steps taken per five-minute interval allow graphic
 - Rplot4. Multiple time series of mean number of steps taken per five-minute interval averaged over weekends or weekdays.
 
 ```{r}
-setwd("C:/Users/d2i2k/tmp/RepData_PeerAssessment1")
+setwd("C:/Users/d2i2k/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE) 
 x <- tapply(ActivityData$steps,INDEX=ActivityData$date,FUN=sum,na.rm=TRUE)
 y <- subset(x, x>0)
@@ -74,7 +74,7 @@ which.max(y)
 
 ###Strategy for data imputation of missing values as zeroes###
 ```{r}
-setwd("C:/Users/d2i2k/tmp/RepData_PeerAssessment1")
+setwd("C:/Users/d2i2k/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE) 
 x <- is.na(ActivityData$steps)
 x.sub <- subset(x,x="TRUE")
