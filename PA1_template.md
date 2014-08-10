@@ -1,12 +1,3 @@
----
-Output: PA1_template.html
-Title: PA1_template.Rmd
-output:
-  html_document:
-    keep_md: yes
-  pdf_document:
-    keep_tex: yes
----
 
 #Assignment#
 
@@ -45,7 +36,8 @@ Time series of mean number of steps taken per five-minute interval allow graphic
 - Rplot3. Histogram of total number of steps taken daily including imputed missing values, 
 - Rplot4. Multiple time series of mean number of steps taken per five-minute interval averaged over weekends or weekdays.
 
-```{r}
+
+```r
 setwd("C:/Users/d2i2k/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE) 
 x <- tapply(ActivityData$steps,INDEX=ActivityData$date,FUN=sum,na.rm=TRUE)
@@ -53,61 +45,91 @@ y <- subset(x, x>0)
 ```
 
 **Rplot1. Histogram of total number of steps taken daily (excluding missing values)**
-```{r, echo=FALSE}
-hist(y,main="Histogram of Daily Steps",xlab="Daily Number of Steps",ylab="Frequency")
-```
+![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
 
 **Mean and median number of steps taken daily (excluding missing values)**
-```{r}
+
+```r
 summary(y)
 ```
-```{r} 
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##      41    8840   10800   10800   13300   21200
+```
+
+```r
 x <- tapply(ActivityData$interval,INDEX=ActivityData$interval,FUN=mean,na.rm=TRUE)
 y <- tapply(ActivityData$steps,INDEX=ActivityData$interval,FUN=mean,na.rm=TRUE)
 xy <- cbind(x,y)
 ```
 
 **Rplot2. Time series of mean steps taken per five-minute interval averaged over days**
-```{r, echo=FALSE}
-plot(xy,type="l",main="Time Series of Mean Steps",xlab="Daily Interval (in minutes)",ylab="Average Number of Steps")
-```
+![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
 
 **Maximum number of steps taken per five-minute interval (peak activity equals 206 steps during the 104th five-minute interval @ 835 minutes)**
-```{r}
+
+```r
 which.max(y)
 ```
 
+```
+## 835 
+## 104
+```
+
 ###Strategy for data imputation of missing values as zeroes###
-```{r}
+
+```r
 setwd("C:/Users/d2i2k/RepData_PeerAssessment1")
 ActivityData <- read.csv("activity.csv", header=TRUE) 
 x <- is.na(ActivityData$steps)
 x.sub <- subset(x,x="TRUE")
 length(x.sub)
+```
+
+```
+## [1] 2304
+```
+
+```r
 y <- ifelse(is.na(ActivityData$steps),0,ActivityData$steps)
 z <- data.frame(y,ActivityData$date)
 w <- tapply(z$y,INDEX=z$ActivityData.date,FUN=sum,na.rm=TRUE)
 ```
 
 **Rplot3. Histogram of total number of steps taken daily (including imputed missing values)**
-```{r, echo=FALSE}
-hist(w,main="Histogram of Daily Steps",xlab="Daily Number of Steps",ylab="Frequency",)
-```
+![plot of chunk unnamed-chunk-8](./PA1_template_files/figure-html/unnamed-chunk-8.png) 
 
 **Mean and median number of steps taken daily (including imputed missing values)**
-```{r}
+
+```r
 summary(w)
 ```
 
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0    6780   10400    9350   12800   21200
+```
+
 ###Repeat strategy for data imputation of missing values as zeroes###
-```{r}
+
+```r
 x <- ifelse(is.na(ActivityData$steps), 0, ActivityData$steps)  # 17,568 row vector
 y <- ActivityData$interval                                     # 17,568 row vector
 ```
 
 ###Factor variable for weekends (Sat-Sun) versus week days (Mon-Fri)###
-```{r}
+
+```r
 library(chron)
+```
+
+```
+## Warning: package 'chron' was built under R version 3.0.3
+```
+
+```r
 w <- is.weekend(ActivityData$date)                             # 17,568 row vector
 xyw <- data.frame(x,y,w)                                       # 17,568 row by 3 column array
 xyw1 <- subset(xyw,w=="TRUE")                                  #  4,608 row by 3 column array for weekends
@@ -128,7 +150,9 @@ xy <- rbind(xy1,xy2)                                           #    576 row by 3
 ```
 
 **Rplot4. Multiple time series of mean steps taken per five-minute interval averaged over weekends or weekdays**
-```{r, echo=FALSE}
-library(ggplot2)
-qplot(y,x,data=xy,facets=z~.,main="Multiple Time Series for Mean Steps on Weekends or Weekdays",geom=c("line"),xlab="Daily Interval (in minutes)",ylab="Average Number of Steps")
+
 ```
+## Warning: package 'ggplot2' was built under R version 3.0.3
+```
+
+![plot of chunk unnamed-chunk-12](./PA1_template_files/figure-html/unnamed-chunk-12.png) 
