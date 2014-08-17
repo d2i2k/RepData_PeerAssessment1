@@ -1,11 +1,6 @@
 ---
-Output: PA1_template.html
-Title: PA1_template.Rmd
-output:
-  html_document:
-    keep_md: yes
-  pdf_document:
-    keep_tex: yes
+Title: "PA1_template.Rmd"
+Output: "PA1_template.html"
 ---
 
 #Assignment#
